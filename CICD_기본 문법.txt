@@ -1,0 +1,56 @@
+* Jenkins Pipeline 프로젝트
+
+1. 의미
+지속적 배포(CD: Continuous Delivery) 파이프라인을 Jenkins에 구현하고 통합하는 것을 지원하는 플러그인의 모음을 의미
+
+
+2. Scripted Pipeline syntax
+1) Groovy 스트립트를 이용하여 파이프라인을 구성
+2) JAVA API를 사용할 수 있어 다양한 워크플로우 구성 및 커스터마이징이 가능
+3) 모든 유효한 선언적 파이프라인은 pipeline 블록으로 묶여야 함
+
+
+3. 기본 파이프라인 블록
+pipeline {
+  /* Declare Pipeline here */
+}
+
+
+4. Pipeline's syntax
+1) 문장 구분자인 세미콜론을 사용하지 않고, 각 문장은 구분할 때 마다 줄을 바꿔야 한다.
+2) 기본 파이프라인 블록은 Sections, Directives, Steps 등으로 구성된다.
+3) Sections
+하나 이상의 Directive 또는 step을 포함하는 논리적인 그룹
+4) Directive
+ (1) 실제 기능이 수행되기 위한 도구를 지정
+ (2) environment, options, parameters, triggers, stage, tools, input 등으로 구성됩니다.
+ (3) https://www.jenkins.io/doc/book/pipeline/syntax/#declarative-directives
+5) Step
+ (1) 실제 Jenkins가 수행할 작업을 의미
+ (2) 각 step을 수행하는 플러그인에서 해당 기능을 제공
+ (3) 파이프라인 step 단계는 agent 및 workspace를 잠금(Locking)하고 난 뒤, 외부 프로세스를 실행
+ (4) https://www.jenkins.io/doc/pipeline/steps/
+6) 문자열 보간(String interpolation)
+ (1) Jenkins Pipeline은 문자열 보간을 위해 Groovy와 동일한 규칙을 사용
+ (2) 작은 따옴표('') 또는 큰 따옴표("")를 이용해 문자열을 선언
+ (3) 큰 따옴표("")로 선언한 문자열만 문자열 보간을 지원
+ (4) 예시
+def name = 'Min'
+  echo 'Hello ${name}'  ->  결과  Hello ${name}
+  echo "Hello ${name}"  ->  결과  Hello Min
+
+
+5. 파이프라인 예시
+ - stages 안에 여러 stage를 넣어 구분할 수 있음
+ - echo : 단순 출력용 코드
+pipeline {
+    agent any
+
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+    }
+}
